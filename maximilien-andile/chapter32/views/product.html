@@ -1,3 +1,4 @@
+<!--{{ printf "%#v" . }}-->
 {{ template "header" . }}
 <h1>{{.Name}}</h1>
 <p>{{.Description}}</p>
@@ -5,14 +6,18 @@
 <p>Shipping Date : {{.ShippingDate.Format "2006-01-02"}}</p>
 <h2>Delivery options</h2>
 <ul>
-    <li>Express + 2$ </li>
-    <li>Ultra Express + 5$</li>
-    <li>Normal</li>
+    {{range $index, $element := .ShippingOptions}}
+       <li>{{ $element }}</li>
+    {{end}}
 </ul>
 {{ if and .Sale .SaleImagePath}}
     <p>My super image</p>
     <!--Add image here-->
 {{ end }}
+{{ $firstDelOpt := index .ShippingOptions 0}}
+<p>First delivery option is {{ $firstDelOpt }}</p>
+{{ $note := index .Notes 0 1}}
+<p>First note, second criterion : {{$note}}</p>
 {{ template "footer" . }}
 <p>{{call .MyFunc "first" "second"}}</p>
 <p>{{capitalizeFirstLetter "test test фыва"}}</p>

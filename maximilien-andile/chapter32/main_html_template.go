@@ -13,13 +13,15 @@ import (
 )
 
 type Product struct {
-	Name          string
-	Price         string
-	Description   string
-	ShippingDate  time.Time
-	Sale          bool
-	SaleImagePath []string
-	MyFunc        func(string, string) string
+	Name            string
+	Price           string
+	Description     string
+	ShippingDate    time.Time
+	Sale            bool
+	SaleImagePath   []string
+	MyFunc          func(string, string) string
+	ShippingOptions []string
+	Notes           [][]int
 }
 
 func (p Product) Foo() string {
@@ -57,6 +59,12 @@ func redTeaPotHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notes := [][]int{}
+	note1 := []int{1, 2, 3}
+	note2 := []int{4, 5, 6}
+	notes = append(notes, note1)
+	notes = append(notes, note2)
+
 	teaPot := Product{
 		Name:          "Red Tea Pot 250ml",
 		Description:   "Test",
@@ -65,6 +73,12 @@ func redTeaPotHandler(w http.ResponseWriter, r *http.Request) {
 		Sale:          true,
 		SaleImagePath: []string{"path to image"},
 		MyFunc:        Bar,
+		ShippingOptions: []string{
+			"Extra Priority",
+			"Normal",
+			"Low Priority",
+		},
+		Notes: notes,
 	}
 
 	err = tmpl.ExecuteTemplate(w, "product.html", teaPot)
